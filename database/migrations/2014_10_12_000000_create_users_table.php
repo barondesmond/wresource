@@ -20,8 +20,18 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->string('api_token')->unique();
             $table->timestamps();
         });
+        DB::table('users')->insert(
+            array(
+                'name' => 'api',
+                'email' => 'api@domain.com',
+                'api_token' => hash('sha256', env('TOKEN')),
+                'email_verified_at' => date("Y-m-d H:i:s"),
+                'password' => hash('sha256', env('TOKEN')),
+            )
+        );
     }
 
     /**

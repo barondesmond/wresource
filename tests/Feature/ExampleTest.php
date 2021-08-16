@@ -14,7 +14,12 @@ class ExampleTest extends TestCase
      */
     public function test_example()
     {
-        $response = $this->get('/');
+        $token = hash('sha256', env('TOKEN'));
+
+        $response = $this->withHeaders([
+                       'Authorization' => 'Bearer '. $token,
+                       'Accept' => 'application/json'
+                   ])->get('/api/widget/');
 
         $response->assertStatus(200);
     }
